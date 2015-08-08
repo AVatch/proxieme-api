@@ -5,3 +5,4 @@ django-filter
 braintree
 psycopg2==2.5.4
 awsebcli
+opentok>=2.3.0

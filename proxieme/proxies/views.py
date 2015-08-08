@@ -1,5 +1,13 @@
 from django.shortcuts import get_object_or_404
 
+from opentok import OpenTok
+from opentok import Roles
+from opentok import MediaModes
+
+API_KEY = "45306032"
+API_SECRET = "9399ba2cd2fef46d3f8ca1465519a9a5efe5505a"
+OPENTOK_SDK = OpenTok(API_KEY, API_SECRET)
+
 from rest_framework import generics
 from rest_framework import authentication
 from rest_framework import permissions
@@ -60,6 +68,16 @@ class ProxieSessionList(generics.ListCreateAPIView):
     authentication_classes = (authentication.SessionAuthentication,
                               authentication.TokenAuthentication)
     permission_classes = (permissions.IsAuthenticated, )
+
+    def perform_create(self, serializer):
+        session = OPENTOK_SDK.create_session(media_mode=MediaModes.routed)
+        token1 = OPENTOK_SDK.generate_token(session.session_id, Roles.publisher)
+        token2 = OPENTOK_SDK.generate_token(session.session_id, Roles.publisher)
+
+        serializer.save(sessionID=session.session_id,
+                        surrogateID=token1,
+                        requesterID=token2)
+        
 
 
 class ProxieSessionDetail(generics.RetrieveUpdateDestroyAPIView):
