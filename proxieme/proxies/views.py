@@ -27,6 +27,17 @@ class ProxiesDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated, )
 
 
+class ProxieBidList(generics.ListAPIView):
+    serializer_class = BidSerializer
+    authentication_classes = (authentication.SessionAuthentication,
+                              authentication.TokenAuthentication)
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        proxie = get_object_or_404(Proxie, pk=self.kwargs['pk'])
+        return Bid.objects.filter(proxie=proxie)
+
+
 class BidList(generics.ListCreateAPIView):
     queryset = Bid.objects.all()
     serializer_class = BidSerializer
