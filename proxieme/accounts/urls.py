@@ -31,6 +31,14 @@ urlpatterns = format_suffix_patterns([
     url(r'^me/$',
         views.MeDetail.as_view(),
         name='me-detail'),
+
+    url(r'^me/surrogates/$',
+        views.MeSurrogates.as_view(),
+        name='me-surrogate-list'),
+
+    url(r'^me/requesters/$',
+        views.MeRequesters.as_view(),
+        name='me-requesters-list'),
 ])
 
 # Get the auth token for the user

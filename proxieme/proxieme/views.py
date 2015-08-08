@@ -16,5 +16,6 @@ def api_root(request, format=None):
         'me': reverse('me-detail', request=request, format=format),
         'accounts': reverse('account-list', request=request, format=format),
         'proxies': reverse('proxies-list', request=request, format=format),
+        'proxie sessions': reverse('proxiessessions-list', request=request, format=format),
         'bids': reverse('bid-list', request=request, format=format)
     })

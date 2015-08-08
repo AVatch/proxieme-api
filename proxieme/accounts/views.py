@@ -6,8 +6,8 @@ from rest_framework import permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from proxies.models import Proxie, Bid
-from proxies.serializers import ProxieSerializer, BidListSerializer
+from proxies.models import Proxie, Bid, ProxieSession
+from proxies.serializers import ProxieSerializer, BidListSerializer, ProxieSessionSerializer
 
 from .models import Account
 from .serializers import AccountSerializer
@@ -85,3 +85,23 @@ class MeDetail(APIView):
         me = request.user
         serializer = AccountSerializer(me, context={'request': request})
         return Response(serializer.data)
+
+
+class MeSurrogates(generics.ListAPIView):
+    serializer_class = ProxieSessionSerializer
+    authentication_classes = (authentication.SessionAuthentication,
+                              authentication.TokenAuthentication)
+    permission_classes = (permissions.IsAuthenticated, )
+    def get_queryset(self):
+        me = self.request.user
+        return ProxieSession.objects.filter(surrogate_id=me)
+
+
+class MeRequesters(generics.ListAPIView):
+    serializer_class = ProxieSessionSerializer
+    authentication_classes = (authentication.SessionAuthentication,
+                              authentication.TokenAuthentication)
+    permission_classes = (permissions.IsAuthenticated, )
+    def get_queryset(self):
+        me = self.request.user
+        return ProxieSession.objects.filter(requester_id=me)

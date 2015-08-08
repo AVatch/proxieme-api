@@ -33,3 +33,21 @@ class Bid(models.Model):
 
     class Meta:
         ordering = ('-time_created',)
+
+
+class ProxieSession(models.Model):
+    sessionID = models.CharField(max_length=500)
+    surrogateID = models.CharField(max_length=500)
+    requesterID = models.CharField(max_length=500)
+
+    bid = models.ForeignKey(Bid, related_name='PSbid')
+    proxie = models.ForeignKey(Proxie, related_name='PSproxie')
+    surrogate = models.ForeignKey(Account, related_name='PSsurrogate')
+    requester = models.ForeignKey(Account, related_name='PSrequester')
+
+    time_created = models.DateTimeField(auto_now_add=True)
+    time_updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ('-time_created',)
+
