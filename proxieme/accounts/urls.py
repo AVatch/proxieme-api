@@ -20,6 +20,14 @@ urlpatterns = format_suffix_patterns([
         views.AccountDetail.as_view(),
         name='account-detail'),
 
+    url(r'^accounts/(?P<pk>[0-9]+)/proxies/$',
+        views.AccountProxieList.as_view(),
+        name='account-proxie-list'),
+
+    url(r'^accounts/(?P<pk>[0-9]+)/bids/$',
+        views.AccountBidList.as_view(),
+        name='account-bid-list'),
+
     url(r'^me/$',
         views.MeDetail.as_view(),
         name='me-detail'),

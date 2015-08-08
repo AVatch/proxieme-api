@@ -6,6 +6,9 @@ from rest_framework import permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+from proxies.models import Proxie, Bid
+from proxies.serializers import ProxieSerializer, BidListSerializer
+
 from .models import Account
 from .serializers import AccountSerializer
 
@@ -44,6 +47,28 @@ class AccountDetail(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = (authentication.SessionAuthentication,
                               authentication.TokenAuthentication)
     permission_classes = (permissions.IsAuthenticated,)
+
+
+class AccountProxieList(generics.ListAPIView):
+    serializer_class = ProxieSerializer
+    authentication_classes = (authentication.SessionAuthentication,
+                              authentication.TokenAuthentication)
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        account = get_object_or_404(Account, pk=self.kwargs['pk'])
+        return Proxie.objects.filter(account=account)
+
+
+class AccountBidList(generics.ListAPIView):
+    serializer_class = BidListSerializer
+    authentication_classes = (authentication.SessionAuthentication,
+                              authentication.TokenAuthentication)
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        account = get_object_or_404(Account, pk=self.kwargs['pk'])
+        return Bid.objects.filter(bidder=account)
 
 
 class MeDetail(APIView):
