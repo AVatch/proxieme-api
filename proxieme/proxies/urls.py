@@ -14,7 +14,7 @@ urlpatterns = format_suffix_patterns([
         views.ProxiesDetail.as_view(),
         name='proxies-detail'),
 
-    url(r'^proxies/(?P<pk>[0-9]+)/bids$',
+    url(r'^proxies/(?P<pk>[0-9]+)/bids/$',
         views.ProxieBidList.as_view(),
         name='proxie-bid-list'),
 
