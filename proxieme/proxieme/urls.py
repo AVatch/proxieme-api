@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^api/' + API_VERSION + '/$', views.api_root),
 
     url(r'^api/' + API_VERSION + '/', include('accounts.urls')),
+    url(r'^api/' + API_VERSION + '/', include('proxies.urls')),
 )
 
 urlpatterns += staticfiles_urlpatterns()

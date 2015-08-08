@@ -46,7 +46,7 @@ class Account(AbstractBaseUser):
         ordering = ('time_created', )
 
     def __str__(self):
-        return self.email
+        return self.username
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
