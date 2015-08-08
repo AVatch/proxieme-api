@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from .models import Proxie, Bid
-from .serializers import ProxieSerializer, BidSerializer
+from .serializers import ProxieSerializer, BidSerializer, BidListSerializer
 
 
 class ProxiesList(generics.ListCreateAPIView):
@@ -28,7 +28,7 @@ class ProxiesDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ProxieBidList(generics.ListAPIView):
-    serializer_class = BidSerializer
+    serializer_class = BidListSerializer
     authentication_classes = (authentication.SessionAuthentication,
                               authentication.TokenAuthentication)
     permission_classes = (permissions.IsAuthenticated, )
