@@ -77,7 +77,17 @@ class ProxieSessionList(generics.ListCreateAPIView):
         serializer.save(sessionID=session.session_id,
                         surrogateID=token1,
                         requesterID=token2)
-        
+
+
+class ProxieSessions(generics.ListAPIView):
+    serializer_class = ProxieSessionSerializer
+    authentication_classes = (authentication.SessionAuthentication,
+                              authentication.TokenAuthentication)
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get_queryset(self):
+        proxie = get_object_or_404(Proxie, pk=self.kwargs['pk'])
+        return ProxieSession.objects.filter(proxie=proxie)
 
 
 class ProxieSessionDetail(generics.RetrieveUpdateDestroyAPIView):
