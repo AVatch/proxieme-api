@@ -127,7 +127,7 @@ class Braintree(APIView):
 
     def post(self, request, format=None):
         try:
-            nonce = request.data.get('nonce')
+            nonce = request.data.get('payment_method_nonce')
             amount = request.data.get('amount')
 
             print request.data;
