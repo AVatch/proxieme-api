@@ -111,10 +111,6 @@ class MeRequesters(generics.ListAPIView):
 
 
 class Braintree(APIView):
-    authentication_classes = (authentication.SessionAuthentication,
-                              authentication.TokenAuthentication)
-    permission_classes = (permissions.IsAuthenticated,)
-
     def get(self, request, format=None):
         try:
             braintree.Configuration.configure(braintree.Environment.Sandbox,
