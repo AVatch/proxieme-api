@@ -110,8 +110,12 @@ class MeRequesters(generics.ListAPIView):
         return ProxieSession.objects.filter(requester_id=me)
 
 
-class GenerateBrainTreeClientToken(APIView):        
-    def get(self, request):
+class Braintree(APIView):
+    authentication_classes = (authentication.SessionAuthentication,
+                              authentication.TokenAuthentication)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, format=None):
         try:
             braintree.Configuration.configure(braintree.Environment.Sandbox,
                                   merchant_id="km4wdsbczwkb26vv",
@@ -124,3 +128,18 @@ class GenerateBrainTreeClientToken(APIView):
         except Exception as e:
             return Response(serializer.errors,
                             status=status.HTTP_400_BAD_REQUEST)
+
+    def post(self, request, format=None):
+        try:
+            nonce = request.data.get('nonce')
+            amount = request.data.get('amount')
+            result = braintree.Transaction.sale({
+                "amount": amount,
+                "payment_method_nonce": nonce
+            })
+            response = {"result": result}
+            return Response(response,
+                        status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+

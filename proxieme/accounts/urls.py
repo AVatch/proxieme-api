@@ -40,8 +40,8 @@ urlpatterns = format_suffix_patterns([
         views.MeRequesters.as_view(),
         name='me-requesters-list'),
 
-    url(r'^braintree/token/$',
-        views.GenerateBrainTreeClientToken.as_view(),
+    url(r'^braintree/$',
+        views.Braintree.as_view(),
         name='braintree-token'),
 
 
