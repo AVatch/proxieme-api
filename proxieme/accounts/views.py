@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 
 import braintree
 
@@ -126,19 +126,23 @@ class Braintree(APIView):
                             status=status.HTTP_400_BAD_REQUEST)
 
     def post(self, request, format=None):
+        print request.data
+        origin = request.data.get('origin')
         try:
+            braintree.Configuration.configure(braintree.Environment.Sandbox,
+                                  merchant_id="km4wdsbczwkb26vv",
+                                  public_key="dkfsm9njgpkgw9k9",
+                                  private_key="7ad555bb3d0feddba887d12d022b53ae")
             nonce = request.data.get('payment_method_nonce')
             amount = request.data.get('amount')
-
-            print request.data;
-
+            
             result = braintree.Transaction.sale({
                 "amount": amount,
                 "payment_method_nonce": nonce
             })
             response = {"result": result}
-            return Response(response,
-                        status=status.HTTP_200_OK)
+            return redirect(origin)
         except Exception as e:
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            print e
+            return redirect(origin)
 
