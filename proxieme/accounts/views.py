@@ -129,6 +129,9 @@ class Braintree(APIView):
         try:
             nonce = request.data.get('nonce')
             amount = request.data.get('amount')
+
+            print request.data;
+
             result = braintree.Transaction.sale({
                 "amount": amount,
                 "payment_method_nonce": nonce

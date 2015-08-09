@@ -29,6 +29,7 @@ ALLOWED_HOSTS = []
 
 CORS_ORIGIN_WHITELIST = (
     'localhost:8100',
+    '*.ngrok.com'
 )
 
 # Application definition
