@@ -1,8 +1,11 @@
 from django.shortcuts import get_object_or_404
 
+import braintree
+
 from rest_framework import generics, status
 from rest_framework import authentication
 from rest_framework import permissions
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -105,3 +108,19 @@ class MeRequesters(generics.ListAPIView):
     def get_queryset(self):
         me = self.request.user
         return ProxieSession.objects.filter(requester_id=me)
+
+
+class GenerateBrainTreeClientToken(APIView):        
+    def get(self, request):
+        try:
+            braintree.Configuration.configure(braintree.Environment.Sandbox,
+                                  merchant_id="km4wdsbczwkb26vv",
+                                  public_key="dkfsm9njgpkgw9k9",
+                                  private_key="7ad555bb3d0feddba887d12d022b53ae")
+            token = braintree.ClientToken.generate()
+            response = {'token': token}
+            return Response(response,
+                        status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)

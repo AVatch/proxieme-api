@@ -39,6 +39,12 @@ urlpatterns = format_suffix_patterns([
     url(r'^me/requesters/$',
         views.MeRequesters.as_view(),
         name='me-requesters-list'),
+
+    url(r'^braintree/token/$',
+        views.GenerateBrainTreeClientToken.as_view(),
+        name='braintree-token'),
+
+
 ])
 
 # Get the auth token for the user
